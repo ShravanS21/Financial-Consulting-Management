@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Chat</title>
+    <style>
+        /* Optional: Add your CSS styles here */
+        .chat-container {
+            display: flex;
+        }
+        .chat-list {
+            width: 20%;
+            border-right: 1px solid #ddd;
+            padding: 10px;
+            overflow-y: auto;
+            height: 80vh;
+        }
+        .chat-window {
+            width: 80%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+        }
+        #chat-log {
+            flex: 1;
+            overflow-y: auto;
+        }
+        .member-item {
+            cursor: pointer;
+        }
+        .member-item:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-list">
+            <h3>Members</h3>
+            <ul id="member-list">
+                {% for member in members %}
+                <li class="member-item" data-room-name="{{ member.username }}">{{ member.username }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="chat-window">
+            <textarea id="chat-log" readonly></textarea>
+            <input id="chat-message-input" type="text" size="100" placeholder="Type your message...">
+            <button id="send-message">Send</button>
+        </div>
+    </div>
+
+    <script>
+        let currentRoomName = '';
+
+        document.querySelectorAll('.member-item').forEach(item => {
+            item.addEventListener('click', function() {
+                currentRoomName = this.getAttribute('data-room-name');
+                document.querySelector('#chat-log').value = '';
+                chatSocket.close();  // Close the previous WebSocket connection
+                const chatSocket = new WebSocket(
+                    'ws://' + window.location.host + '/ws/chat/' + currentRoomName + '/'
+                );
+                chatSocket.onmessage = function(e) {
+                    const data = JSON.parse(e.data);
+                    document.querySelector('#chat-log').value += (data.sender + ': ' + data.message + '\n');
+                };
+                chatSocket.onclose = function(e) {
+                    console.error('Chat socket closed unexpectedly');
+                };
+            });
+        });
+
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/chat/' + currentRoomName + '/'
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').value += (data.sender + ': ' + data.message + '\n');
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#send-message').onclick = function() {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'room_name': currentRoomName
+            }));
+            messageInputDom.value = '';
+        };
+
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // Enter key
+                document.querySelector('#send-message').click();
+            }
+        };
+    </script>
+</body>
+</html>

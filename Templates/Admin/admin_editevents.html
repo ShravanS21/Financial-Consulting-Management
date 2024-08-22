@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Event</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .navbar {
+            background-color: #04364A;
+            color: #fff;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+        }
+        .navbar-nav .nav-link {
+            color: #fff;
+            font-size: 1rem;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            text-decoration: none;
+        }
+        .navbar-nav .nav-link:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
+        .navbar-nav .nav-link.active {
+            background-color: #003f7f;
+            color: #fff;
+        }
+
+        #sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        #sidebar .logo {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #sidebar .logo img {
+            width: 80px;
+            height: auto;
+        }
+        #sidebar .nav-link {
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        #sidebar .nav-link.active {
+            background-color: #484f56;
+            color: #ffffff;
+        }
+        #sidebar .nav-link:hover {
+            background-color: #495057;
+            color: #ffffff;
+        }
+
+        .container {
+            margin-left: 250px; /* Adjust to match sidebar width */
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        .form-container h1 {
+            margin-bottom: 30px;
+            color: #04364A;
+            font-size: 2rem;
+        }
+        .form-container label {
+            font-weight: bold;
+        }
+        .form-container input[type="text"],
+        .form-container input[type="email"],
+        .form-container input[type="password"],
+        .form-container input[type="date"],
+        .form-container input[type="time"],
+        .form-container input[type="url"],
+        .form-container textarea {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+        }
+        .form-container button[type="submit"] {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-container button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar {
+                width: 200px;
+            }
+            .container {
+                margin-left: 0;
+            }
+            .navbar {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <a class="navbar-brand" href="#">Edit Events</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" id="logout" href="/public/">
+                        <i class="fa fa-sign-out"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <nav id="sidebar">
+        <div class="logo">
+            <img src="{% static 'images/FCP_logo_white.png' %}" alt="Logo">
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="/adminhome/">
+                    <i class="fa fa-user-circle"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/adminaddevents/">
+                    <i class="fa fa-newspaper"></i> Add Events
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active dropdown-toggle" data-toggle="collapse" href="#eventsDropdown" aria-expanded="false" aria-controls="eventsDropdown">
+                    <i class="fa fa-list"></i> View Events
+                </a>
+                <div class="collapse" id="eventsDropdown">
+                    <ul class="list-unstyled pl-3">
+                        <li><a class="dropdown-item" href="/adminUpcomingevents/">Upcoming/Ongoing</a></li>
+                        <li><a class="dropdown-item" href="/adminCompletedevents/">Completed</a></li>
+                    </ul>
+                </div>
+            </li>
+            <!-- Other sidebar items here -->
+        </ul>
+    </nav>
+    
+    <main role="main" class="container">
+        <div class="form-container">
+            <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="event_name">Event Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="event_name" name="event_name" value="{{ event.event_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="event_date">Event Date <span class="text-danger">*</span></label>
+                    <input type="date" class="form-control" id="event_date" name="event_date" value="{{ event.event_date }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="event_time">Event Time <span class="text-danger">*</span></label>
+                    <input type="time" class="form-control" id="event_time" name="event_time" value="{{ event.event_time }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="event_details">Event Details <span class="text-danger">*</span></label>
+                    <textarea class="form-control" id="event_details" name="event_details" required>{{ event.event_details }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="meeting_link">Meeting Link <span class="text-danger">*</span></label>
+                    <input type="url" class="form-control" name="meeting_link" id="meeting_link" value="{{ event.meeting_link }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="event_image">Event Image <span class="text-danger">*</span></label>
+                    <input type="file" class="form-control-file" id="event_image" name="event_image" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label for="by">By <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" id="by" name="by" value="{{ event.by }}" pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed" required>
+                </div>
+                <button type="submit" class="btn btn-custom">Save</button>
+            </form>
+            {% if popup_message %}
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            alert("{{ popup_message }}");
+        });
+    </script>
+{% endif %}
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+    <script>
+        function validateForm() {
+            // Get the form elements
+            var eventName = document.getElementById('event_name').value.trim();
+            var eventDate = document.getElementById('event_date').value;
+            var eventTime = document.getElementById('event_time').value;
+            var eventDetails = document.getElementById('event_details').value.trim();
+            var meetingLink = document.getElementById('meeting_link').value.trim();
+            var eventImage = document.getElementById('event_image').files.length;
+            var by = document.getElementById('by').value.trim();
+    
+            // Basic validation
+            if (!eventName || !eventDate || !eventTime || !eventDetails || !meetingLink || !by) {
+                alert('Please fill out all required fields.');
+                return false;
+            }
+    
+            // Validate "By" field
+            var byPattern = /^[A-Za-z\s]+$/;
+            if (!byPattern.test(by)) {
+                alert('The "By" field must contain only letters and spaces.');
+                return false;
+            }
+    
+            // Ensure file is selected if it is required
+            if (eventImage === 0) {
+                alert('Please select an image file.');
+                return false;
+            }
+    
+            return true; // Form is valid
+        }
+    </script>
+</body>
+</html>

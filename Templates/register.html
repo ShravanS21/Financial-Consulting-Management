@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership Registration</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #31313110;
+        }
+        
+        .left {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .left img {
+            max-width: 90%;
+            height: auto;
+            margin-top: 0;
+            margin-left: 75px;
+        }
+        .right {
+            display: flex;
+            align-items: center;    
+            justify-content: center;
+            height: 100%;
+            padding-top: 10px;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 450px;
+            color: #000000;
+            text-align: center;
+            padding: 30px 20px;
+            border-radius: 10px;
+            margin-top: -30px;
+            margin-right:75px;
+            
+        }
+        .form-container img {
+            width: 140px;
+            margin-bottom: 20px;
+        }
+        .form-container h3 {
+            margin-bottom: 30px;
+        }
+        .form-container .input-container {
+            position: relative;
+            margin: 10px 0; /* Reduced margin for a tighter layout */
+        }
+        .form-container .input-container input {
+            width: 100%;
+            padding: 10px 15px; /* Adjusted padding */
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: box-shadow 0.3s;
+        }
+        .form-container .input-container select {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 30px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: box-shadow 0.3s;
+            appearance: none; /* Remove default arrow */
+            background: #fff; /* Background color for the dropdown */
+            -webkit-appearance: none; /* Remove default arrow for Safari */
+            -moz-appearance: none; /* Remove default arrow for Firefox */
+            position: relative;
+            padding-right: 40px; /* Space for custom arrow */
+        }
+        .form-container .input-container input:focus {
+            box-shadow: 0 0 10px rgba(57, 96, 173, 0.5);
+            outline: none;
+        }
+        .form-container .input-container .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #ccc;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #ff5733;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .form-container button:hover {
+            background-color: #ff6543;
+        }
+        .form-container .login-link {
+            margin-top: 20px;
+            font-size: 15px;
+        }
+        .form-container .login-link a {
+            color: #005eff;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        .form-container .login-link a:hover {
+            color: #3b86ff;
+            transform: scale(1.1);
+        }
+
+        /* Custom styling for file upload */
+        .file-upload-container {
+            position: relative;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .file-upload-input {
+            position: absolute;
+            width: 100%;
+            height: 50px;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .file-upload-label {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+        .file-upload-label:hover {
+            background-color: #0056b3;
+        }
+        /* Styling for displaying the selected file name */
+        .file-name {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+        .back-arrow {
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            font-size: 24px;
+            color: #ff5733;
+            text-decoration: none;
+        }
+        
+    </style>
+</head>
+<body> 
+    
+    <div class="container-fluid h-100">
+        <div class="row h-100">     
+            <div class="col-md-6 left d-none d-md-flex">
+                <a href="/public/" class="back-arrow"><i class="fas fa-arrow-left"></i></a>
+                <img src="{% static 'images/registe_financial.png' %}" alt="Logo">
+            </div>
+            <div class="col-md-6 right">
+                <div class="form-container">
+                    <img src="{% static 'images/FCP_logo.png' %}" alt="Logo">
+                    <h3>Create New Account</h3>
+                    <form id="registrationForm" method="post" action="/member_register/" enctype="multipart/form-data" onsubmit="return validateForm()">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="input-container">
+                                    <input type="text" name="username" id="username" placeholder="Username" required pattern="[A-Za-z\s]+" title="Only letters and spaces allowed.">
+                                </div>
+                            </div>
+                        </div>   
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-container">
+                                    <input type="number" name="age" id="age" placeholder="Age" required min="18" max="80">
+                                </div>
+                            </div>                                               
+                            <div class="col-md-6">
+                                <div class="input-container">
+                                    <select name="member_gender" id="member_gender" placeholder="Gender" required>
+                                        <option value="" disabled selected>Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>   
+                        <div class="row">  
+                            <div class="col-md-6">
+                                <div class="input-container">
+                                    <input type="tel" name="contactno" id="contactno" placeholder="Contact Number" required pattern="\d{10}" maxlength="10" title="Contact number should be exactly 10 digits long.">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-container">
+                                    <input type="email" name="email" id="email" placeholder="Email" required>
+                                </div>
+                            </div>
+                        </div>  
+                        
+                        <div class="row">  
+                            <div class="col-md-6">
+                                <div class="input-container">
+                                    <input type="password" name="password" id="password" placeholder="Password" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="input-container">
+                                    <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="file-upload-container">
+                                    <label for="profile_picture" class="file-upload-label">Upload Profile Picture</label>
+                                    <input type="file" name="profile_picture" id="profile_picture" class="file-upload-input" accept="image/*" onchange="displayFileName(this)">
+                                    <div id="file-name" class="file-name">No file chosen</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit">Get Started</button>
+                    </form>
+                    {% if popup_message %}
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            alert("{{ popup_message }}");
+                        });
+                    </script>
+                    {% endif %}
+                    <div class="login-link">
+                        Already a member? <a href="/userlogin/">Login here</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="name-label">
+        © 2024 Financial Consulting Portal. All Rights Reserved <br>
+        Powered by Shravan Shetty | <a href="/adminlogin/" style="color: rgb(235, 232, 59);">Admin</a>
+    </footer> 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function displayFileName(input) {
+            var fileName = input.files[0].name;
+            document.getElementById('file-name').innerText = fileName;
+        }
+
+        function validateForm() {
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirm_password").value;
+            var contactNo = document.getElementById("contactno").value;
+            var username = document.getElementById("username").value;
+
+            // Regex for at least 1 uppercase letter, 1 number, and 1 special character
+            var passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                alert('Passwords do not match.');
+                return false;
+            }
+
+            // Check if password meets complexity requirements
+            if (!passwordRegex.test(password)) {
+                alert('Password must contain at least 8 characters, including 1 uppercase letter, 1 number, and 1 special character.');
+                return false;
+            }
+
+            // Check if contact number is exactly 10 digits
+            if (contactNo.length !== 10) {
+                alert('Contact number must be exactly 10 digits.');
+                return false;
+            }
+
+            // Check if username contains only letters and spaces
+            var nameRegex = /^[A-Za-z\s]+$/;
+            if (!nameRegex.test(username)) {
+                alert('Username should contain only letters and spaces.');
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</body>
+</html>

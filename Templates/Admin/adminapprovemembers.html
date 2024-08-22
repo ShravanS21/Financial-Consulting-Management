@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+   
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        .form-container h1 {
+            margin-bottom: 30px;
+            margin-top: 0%;
+        }
+        .form-container label {
+            font-weight: bold;
+        }
+        .form-container .form-group {
+            margin-bottom: 20px;
+        }
+        .form-container input[type="text"]{
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+        }
+        .form-container input[type="email"] {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .form-container input[type="password"] {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+        }
+        .form-container button[type="submit"] {
+            background-color: #007bff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .form-container button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #sidebar {
+            width: 250px; /* Adjust the width as needed */
+            background-color: #343a40;
+            color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed; /* Fixed positioning to make it hover over other elements */
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto; /* Allows scrolling if content overflows */
+        }
+        
+        #sidebar .logo {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        #sidebar .logo img {
+            width: 80px; /* Adjust the width as needed */
+            height: auto;
+        }
+        
+        #sidebar .user-info {
+            padding: 10px;
+            border-bottom: 1px solid #444;
+            text-align: center;
+        }
+        
+        #sidebar .user-info img {
+            border: 4px solid #007bff;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+        
+        #sidebar .user-info h5 {
+            margin: 10px 0 5px;
+            font-size: 1.2rem;
+        }
+        
+        #sidebar .user-info p {
+            font-size: 0.9rem;
+        }
+        
+        #sidebar .nav-link {
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            display: block;
+            text-align: left
+        }
+        
+        #sidebar .nav-link.active {
+            background-color: #484f56;
+            color: #ffffff;
+        }
+        
+        #sidebar .nav-link:hover {
+            background-color: #495057;
+            color: #ffffff;
+        }       
+        
+        /* Navbar styles */
+        .navbar {
+            background-color: #e1f0ff;
+            color: #fff;
+            padding: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-left: 250px; /* Adjust to match the sidebar width */
+            z-index: 500; /* Ensures navbar is below the sidebar */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-transform: uppercase;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .navbar-nav .nav-item {
+            margin: 0 10px;
+        }
+        
+        .navbar-nav .nav-link {
+            color: #fff;
+            font-size: 1rem;
+            padding: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+            text-decoration: none;
+        }
+        
+        .navbar-nav .nav-link:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
+        
+        .navbar-nav .nav-link.active {
+            background-color: #003f7f;
+            color: #fff;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #sidebar {
+                width: 200px;
+            }
+        
+            #sidebar .logo img {
+                width: 100px;
+            }
+        
+            .navbar {
+                margin-left: 0; /* Reset margin for mobile view */
+            }
+        
+            #sidebar .nav-links {
+                flex-direction: row; /* Horizontal layout for mobile view */
+            }
+        
+            #sidebar .nav-links a {
+                margin-bottom: 0;
+                margin-right: 15px; /* Space between items */
+            }
+        }
+        
+        
+                    
+        #logout {
+            background-color: #3960AD; /* Dark blue background */
+            color: #fff; /* White text */
+            border: none; /* Remove default border */
+            border-radius: 5px; /* Rounded corners */
+            padding: 6px 4px; /* Padding for better size */
+            font-size: 16px; /* Increase font size for readability */
+            display: flex; /* Flexbox for alignment */
+            align-items: center; /* Center items vertically */
+            justify-content: center; /* Center items horizontally */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s, transform 0.3s; /* Smooth transition effects */
+        }
+        
+        #logout:hover {
+            background-color: #294a80; /* Darker blue on hover */
+            transform: translateY(-2px); /* Slight lift effect */
+        }
+        
+        #logout:active {
+            background-color: #1e3c6c; /* Even darker blue on click */
+            transform: translateY(0); /* Reset lift effect */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow on click */
+        }
+        
+        #logout .fa-sign-out {
+            margin-right: 1px; /* Space between icon and text */
+        }
+        
+        #logout a.nav-link {
+            color: #fff; /* Ensure text color is white */
+            text-decoration: none; /* Remove underline from link */
+        }
+        .container {
+            margin-bottom: 423px;
+        }
+        .card-custom {
+            margin: 15px 0;
+        }
+
+        .card-body {
+            background-color: #ffffff;
+        }
+
+        .btn {
+            background-color: #DAFFFB
+        }
+
+        .content-section {
+            display: none;
+        }
+      
+        .content-section.active {
+            display: block;
+        }
+        
+        
+        
+        
+        
+        #submit {
+            background-color: #04364A; /* Primary color */
+            color: #fff; /* White text */
+            border: none; /* Remove border */
+            padding: 10px 20px; /* Padding for size */
+            font-size: 16px; /* Font size */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+        }
+        
+        #submit:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+            transform: translateY(-2px); /* Slight upward movement on hover */
+        }
+        
+        #submit:active {
+            background-color: #003f7f; /* Even darker shade on click */
+            transform: translateY(0); /* Reset movement on click */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow on click */
+        }
+        
+        #submit:focus {
+            outline: none; /* Remove default focus outline */
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom focus outline */
+        }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid #dddddd;
+                margin-top: 20px;
+            }
+        
+            th, td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+        
+            th {
+                background-color: #f2f2f2;
+            }
+        
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+        
+            tr:hover {
+                background-color: #f1f1f1;
+            }
+        
+            .action-buttons {
+                display: flex;
+                gap: 5px;
+            }
+        
+            .action-buttons button {
+                padding: 5px 10px;
+                border: none;
+                cursor: pointer;
+                border-radius: 3px;
+            }
+        
+            .approve {
+                background-color: #5cb85c;
+                color: white;
+            }
+        
+            .decline {
+                background-color: #d9534f;
+                color: white;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                border: 1px solid #dddddd;
+                margin-top: 20px;
+            }
+        
+            th, td {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+        
+            th {
+                background-color: #f2f2f2;
+            }
+        
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+        
+            tr:hover {
+                background-color: #f1f1f1;
+            }
+        
+            .action-buttons {
+                display: flex;
+                gap: 5px;
+            }
+        
+            .action-buttons button {
+                padding: 5px 10px;
+                border: none;
+                cursor: pointer;
+                border-radius: 3px;
+            }
+        
+            .approve {
+                background-color: #5cb85c;
+                color: white;
+            }
+        
+            .decline {
+                background-color: #d9534f;
+                color: white;
+            }
+            #endevent {
+                background-color: #b30000; /* Primary color */
+                color: #fff; /* White text */
+                border: none; /* Remove border */
+                padding: 10px 20px; /* Padding for size */
+                font-size: 16px; /* Font size */
+                border-radius: 5px; /* Rounded corners */
+                cursor: pointer; /* Pointer cursor on hover */
+                transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+            }
+            
+            #endevent:hover {
+                background-color: #b30000; /* Darker shade on hover */
+                transform: translateY(-2px); /* Slight upward movement on hover */
+            }
+            
+            #endevent:active {
+                background-color: #003f7f; /* Even darker shade on click */
+                transform: translateY(0); /* Reset movement on click */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow on click */
+            }
+            
+            #endevent:focus {
+                outline: none; /* Remove default focus outline */
+                box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom focus outline */
+            }
+            .nav-link {
+                color: #ffffff;
+                cursor: pointer;
+            }
+            .dropdown-menu {
+                background-color: #f8f9fa;
+                border: 1px solid #ced4da;
+            }
+            .dropdown-menu .dropdown-item {
+                color: #212529;
+            }
+            .dropdown-menu .dropdown-item:hover {
+                background-color: #e9ecef;
+                color: #007bff;
+            } 
+            .collapse {
+                transition: height 0.3s ease;
+            }
+
+
+
+            .members-table {
+                margin: 20px 0;
+                border-collapse: collapse;
+                width: 100%;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            }
+    
+            .members-table thead th {
+                background-color: #343a40;
+                color: white;
+                text-align: center;
+                padding: 12px;
+            }
+    
+            .members-table tbody td {
+                text-align: center;
+                padding: 12px;
+                border-bottom: 1px solid #ddd;
+            }
+    
+            .members-table tbody tr:nth-of-type(odd) {
+                background-color: #f2f2f2;
+            }
+    
+            .members-table tbody tr:hover {
+                background-color: #ddd;
+            }
+    
+            .btn-success, .btn-danger {
+                border: none;
+                color: white;
+                padding: 8px 12px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+                margin: 4px 2px;
+                cursor: pointer;
+                border-radius: 4px;
+            }
+    
+            .btn-success {
+                background-color: #28a745;
+            }
+    
+            .btn-danger {
+                background-color: #dc3545;
+            }
+    
+            .text-success {
+                color: #28a745 !important;
+            }
+    
+            .text-danger {
+                color: #dc3545 !important;
+            }
+            .admin {
+                font-family: 'Playfair Display', italic;
+                font-size: 2.0rem;
+                color: #343a40;
+                
+                margin-top: 20px; /* Adjust this value as needed to move the h2 down */
+            }
+    </style>
+</head>
+<body class="text-light">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <h2 style="color:#343a40" class="admin">Members</h2>
+        <div class="ml-auto">
+            <button type="button" id="logout" class="btn btn-sm d-flex align-items-center justify-content-center">
+                <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+                <a class="nav-link text-dark" href="/adminlogin/" style="margin-left: 8px;">Logout</a>
+            </button>
+        </div>
+    </nav> 
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+                <div class="logo">
+                    <img src="{% static 'images/FCP_logo_white.png' %}" alt="Logo">
+                </div>
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/adminhome/">
+                                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                <span class="username">Dashboard</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/adminaddevents/">
+                                <i class="fa fa-newspaper" aria-hidden="true"></i>
+                                <span class="username">Add Events</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#eventsDropdown" aria-expanded="false" aria-controls="eventsDropdown">
+                                <i class="fa fa-list" aria-hidden="true"></i>
+                                <span class="username">View Events</span>
+                            </a>
+                            <div class="collapse" id="eventsDropdown">
+                                <ul class="list-unstyled pl-3">
+                                    <li><a class="dropdown-item" href="/adminUpcomingevents/" style="color: #fff;">Upcoming/Ongoing</a></li>
+                                    <li><a class="dropdown-item" href="/adminCompletedevents/" style="color: #fff;">Completed</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link" href="/adminflashnews/">
+                                <i class="fa fa-newspaper" aria-hidden="true"></i>
+                                <span class="username">Flash</span>
+                            </a>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#BlogsDropdown" aria-expanded="false" aria-controls="BlogsDropdown">
+                                <i class="fa fa-folder" aria-hidden="true"></i>
+                                <span class="username">Blogs</span>
+                            </a>
+                            <div class="collapse" id="BlogsDropdown">
+                                <ul class="list-unstyled pl-3">
+                                    <li><a class="dropdown-item" href="/adminaddblogs/" style="color: #fff;">Add Blog</a></li>
+                                    <li><a class="dropdown-item" href="/admin_view_blogs/" style="color: #fff;">View Blogs</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#trainingsDropdown" aria-expanded="false" aria-controls="trainingsDropdown">
+                                <i class="fa fa-laptop" aria-hidden="true"></i>
+                                <span class="username">Trainings</span>
+                            </a>
+                            <div class="collapse" id="trainingsDropdown">
+                                <ul class="list-unstyled pl-3">
+                                    <li><a class="dropdown-item" href="/adminaddtrainings/" style="color: #fff;">Add Training</a></li>
+                                    <li><a class="dropdown-item" href="/admin_view_trainings/" style="color: #fff;">View Trainings</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#videosDropdown" aria-expanded="false" aria-controls="videosDropdown">
+                                <i class="fa fa-file-video" aria-hidden="true"></i>
+                                <span class="username">Video Gallery</span>
+                            </a>
+                            <div class="collapse" id="videosDropdown">
+                                <ul class="list-unstyled pl-3">
+                                    <li><a class="dropdown-item" href="/uploadvideo/" style="color: #fff;">Add Video</a></li>
+                                    <li><a class="dropdown-item" href="/view_videos/" style="color: #fff;">View Video</a></li>
+                                </ul>
+                            </div>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/approveuser/">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <span class="username">Members</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#EventDropdown" aria-expanded="false" aria-controls="EventDropdown">
+                                <i class="fa fa-folder" aria-hidden="true"></i>
+                                <span class="username">Event Registration</span>
+                            </a>
+                            <div class="collapse" id="EventDropdown">
+                                <ul class="list-unstyled pl-3">
+                                    <li><a class="dropdown-item" href="/adminview_public_eventregister/" style="color: #fff;">Public</a></li>
+                                    <li><a class="dropdown-item" href="/adminview_members_eventregister/" style="color: #fff;">Members</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/admin_viewpayment/">
+                                <i class="fa fa-credit-card"></i>
+                                <span class="username">Payment</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/viewfeedback/">
+                                <i class="fa fa-commenting"></i>
+                                <span class="username">Feedback</span>
+                            </a>
+                        </li>
+                    </ul> 
+                </div>
+            </nav>
+            <!-- Main content -->
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="background-color: white; color: black;">
+                
+               
+        <!-- This is Membership Approval Section -->
+         <br>
+        <div class="container">
+            <table class="table table-striped table-bordered members-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Contact Number</th>
+                        <th>Email</th>
+                        <th>Date</th>
+                        <th>Password</th>
+                        <th>Profile Picture</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for register in registers %}
+                    <tr>
+                        <td>{{ register.username }}</td>
+                        <td>{{ register.age }}</td>
+                        <td>{{ register.gender }}</td>
+                        <td>{{ register.contactno }}</td>
+                        <td>{{ register.email }}</td>
+                        <td>{{ register.registration_date }}</td>
+                        <td>{{ register.password }}</td>
+                        <td>
+                            {% if register.profile_picture %}
+                            <img src="{{ register.profile_picture.url }}" alt="profile Image" style="width: 50px; height: 50px;">
+                            {% else %}
+                            No Image
+                            {% endif %}
+                        </td>
+                        {% if register.is_active == 0 %}
+                        <td class="text-danger">Inactive</td>
+                        <td>
+                            <form method="get" action="/activebtn/">
+                                <input type="hidden" name="userid" value="{{ register.id }}"/>
+                                <button type="submit" class="btn btn-success">Activate</button>
+                            </form>
+                        </td>
+                        {% else %}
+                        <td class="text-success">Active</td>
+                        <td>
+                            <form method="get" action="/inactivebtn/">
+                                <input type="hidden" name="userid" value="{{ register.id }}"/>
+                                <button type="submit" class="btn btn-danger">Deactivate</button>
+                            </form>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+          
+            
+
+     
+              
+            </main>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.members-table').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true
+            });
+        });
+    </script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const navLinks = document.querySelectorAll('#sidebar .nav-link');
+            const eventsLink = document.getElementById('events-link');
+            const eventsCards = document.getElementById('events-cards');
+        
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    // Remove active class from all links
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    // Add active class to the clicked link
+                    this.classList.add('active');
+
+                    // Show the events cards if Events Master is clicked
+                    if (this === eventsLink) {
+                        eventsCards.style.display = 'flex';
+                    } else {
+                        eventsCards.style.display = 'none';
+                    }
+                });
+            });
+
+            // Set minimum date for event_date input to tomorrow's date
+            const eventDateInput = document.getElementById('event_date');
+            const today = new Date();
+            const tomorrow = new Date(today);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const day = String(tomorrow.getDate()).padStart(2, '0');
+            const month = String(tomorrow.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const year = tomorrow.getFullYear();
+            const minDate = `${year}-${month}-${day}`;
+            eventDateInput.setAttribute('min', minDate);
+        });
+
+        $(document).ready(function () {
+            $('.nav-link.dropdown-toggle').click(function (e) {
+                e.preventDefault(); // Prevent the default anchor behavior
+                
+                var $this = $(this);
+                var target = $this.attr('href'); // Get the target collapse div
+                
+                $(target).collapse('toggle'); // Toggle the collapse
+                
+                // Optional: close other dropdowns if multiple are present
+                $('.collapse').not(target).collapse('hide');
+            });
+        });
+    </script>
+</body>
+</html>

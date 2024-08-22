@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Members Event</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    body {
+        background-color: #f8f9fa;
+        color: #212529;
+    }
+    
+    #sidebar {
+        min-height: 100vh;
+        padding-top: 20px;
+        background-color: #1b263b;
+    }
+    
+    #sidebar .nav-link {
+        color: #fff;
+    }
+    
+    #sidebar .nav-link.active {
+        background-color: #778da9;
+        color: #fff;
+    }
+    
+    #sidebar .user-info img {
+        border: 2px solid #007bff;
+    }
+    
+    .navbar-custom {
+        background-color: #778da9;
+        border-bottom: 1px solid #ffffff;
+    }
+    
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav-link {
+        color: #fff;
+    }
+    
+    #logout {
+        background-color: #DAFFFB;
+    }  
+    
+    .content-section {
+        display: none;
+    }
+    
+    .content-section.active {
+        display: block;
+    }
+    
+    .video-card {
+        background-color: #e4e4e7;
+        
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 20px;
+        position: relative;
+    }
+    
+    .video-card img {
+        width: 100%;
+        height: auto;
+    }
+    
+    .video-card-body {
+        padding: 15px;
+        opacity: 0.2;
+    }
+    
+    .video-card-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    
+    .video-card-description {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 10px;
+    }
+    
+    .video-card-button {
+        background-color: #176B87;
+        color: #fff;
+        border: none;
+        padding: 10px 15px;
+        font-size: 14px;
+        border-radius: 5px;
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .video-card-button:hover {
+        background-color: #0f4c61;
+        text-decoration: none;
+        color: #fff;
+    }
+    
+    .container {
+        margin-top: 20px;
+    }
+    
+    .watch-now {
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
+    }
+    .dropdown-item:hover {
+        padding: 10px;
+        background-color: #5fa6ed;
+        color: #fff;
+
+    }
+    /* Styling for footer */
+    footer {
+        background-color: #343738;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    footer a {
+        color: #fff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+        color: #DAFFFB; /* Hover color change */
+    }
+</style>
+</head>
+<body class="bg-dark text-light">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <h2 style="color:#fff">SYFX</h2>
+    <div class="ml-auto">
+        <button type="button" id="logout" class="btn btn-sm d-flex align-items-center justify-content-center">
+            <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+            <a class="nav-link text-dark" href="/public/" style="margin-left: 8px;">Logout</a>
+        </button>
+    </div>
+</nav> 
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/memberhome/">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                            <span class="username">{{ request.session.user_name }}</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#eventsDropdown" aria-expanded="false" aria-controls="eventsDropdown">
+                            <i class="fa fa-folder" aria-hidden="true"></i>
+                            <span class="username">Events</span>
+                        </a>
+                        <div class="collapse" id="eventsDropdown">
+                            <ul class="list-unstyled pl-3">
+                                <li><a class="dropdown-item" href="/events/membersupcoming/" style="color: #fff;">Upcoming/Ongoing</a></li>
+                                <li><a class="dropdown-item" href="/events/memberscompleted/" style="color: #fff;">Completed</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/members_editprofile/">
+                            <i class="fa fa-pencil" aria-hidden="true"></i>
+                            <span class="username">Edit Profile</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/members_videogallery/">
+                            <i class="fa fa-file-video" aria-hidden="true"></i>
+                            <span class="username">Video Gallery</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/members_blogs/">
+                            <i class="fa fa-book"></i>
+                            <span class="username">Blogs</span> 
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/change_password/">
+                            <i class="fa fa-key" aria-hidden="true"></i>
+                            <span class="username">Change Password</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/members_trainings/">
+                            <i class="fa fa-laptop"></i>
+                            <span class="username">Training Sessions</span> 
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/members_generalfeedback/">
+                            <i class="mdi mdi-comment-multiple-outline menu-icon"></i>
+                            <span class="username">Feedback</span> 
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- Main content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="background-color: white; color: black;">
+            <!-- Content for Members Event Page -->
+        </main>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const navLinks = document.querySelectorAll('#sidebar .nav-link');
+    
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                // Remove active class from all links
+                navLinks.forEach(link => link.classList.remove('active'));
+                // Add active class to the clicked link
+                this.classList.add('active');
+                
+                // Show the corresponding content section
+                const contentSections = document.querySelectorAll('.content-section');
+                contentSections.forEach(section => section.classList.remove('active'));
+                const targetSection = document.querySelector(this.getAttribute('href'));
+                targetSection.classList.add('active');
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Completed Events</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Navbar Styles */
+        .navbar-custom {
+            background: #3960AD;
+            padding: 10px 20px;
+        }
+
+        .navbar-custom .navbar-brand {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            margin-left: 280px;
+            font-family: 'Playfair Display', italic;
+        }
+
+        .navbar-custom .navbar-brand h2{
+            height: 40px;
+            color: #fff;
+            margin: 0;
+            display: inline-block;
+        }
+
+        .navbar-custom .nav-link {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: #adb5bd;
+        }
+
+        #logout {
+            background-color: #dc3545;
+            color: #ffffff; /* Ensure the text color is readable */
+            border: none; /* Remove default border */
+            padding: 10px 20px; /* Increase padding for better spacing */
+            border-radius: 5px; /* Rounded corners */
+            font-size: 16px; /* Slightly larger font size */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition for hover effect */
+        }
+
+        #logout:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
+        /* Sidebar Styles */
+        #sidebar {
+            min-height: 100vh;
+            background: #3960AD;
+            color: #ddd;
+            border-right: 1px solid #5fa6ed;
+            padding-top: 20px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+        }
+
+        #sidebar .nav-link {
+            color: #fff;
+            padding: 15px;
+            margin-left: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        #sidebar .nav-link.active, #sidebar .nav-link:hover {
+            background-color: #578efb;
+            color: #fff;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo img {
+            height: 80px;
+            margin-left: 80px;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.03);
+        }
+
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .card-body {
+            padding: 15px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .dropdown-item:hover {
+            padding: 10px;
+            background-color: #5fa6ed;
+            color: #fff;
+    
+        }
+
+        .btn-secondary {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
+
+        .container {
+            margin-left: 270px;
+            padding-top: 20px;
+        }
+        /* Styling for footer */
+        footer {
+            background-color: #343738;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #DAFFFB; /* Hover color change */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <a class="navbar-brand" href="#">
+            <h2>Completed Events</h2>
+        </a>
+        <div class="ml-auto">
+            <a class="btn btn-custom" id="logout" href="/userlogin/">
+                <i class="fa fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </nav>
+
+    <!-- Sidebar -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-logo">
+            <img src="{% static 'images/FCP_logo.png' %}" alt="Logo">
+            <p>____________________________</p>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="/memberhome/">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span class="username">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#eventsDropdown" aria-expanded="false" aria-controls="eventsDropdown">
+                    <i class="fa fa-folder" aria-hidden="true"></i>
+                    <span class="username">Events</span>
+                </a>
+                <div class="collapse" id="eventsDropdown">
+                    <ul class="list-unstyled pl-3">
+                        <li><a class="dropdown-item" href="/events/membersupcoming/" style="color: #fff;">Upcoming/Ongoing</a></li>
+                        <li><a class="nav-link active dropdown-item" href="/events/memberscompleted/" style="color: #fff;">Completed</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/members_editprofile/">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                    <span class="username">Edit Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/members_videogallery/">
+                    <i class="fa fa-file-video" aria-hidden="true"></i>
+                    <span class="username">Video Gallery</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/members_blogs/">
+                    <i class="fa fa-book"></i>
+                    <span class="username">Blogs</span> 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/change_password/">
+                    <i class="fa fa-key" aria-hidden="true"></i>
+                    <span class="username">Change Password</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/members_trainings/">
+                    <i class="fa fa-laptop"></i>
+                    <span class="username">Training Sessions</span> 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/members_generalfeedback/">
+                    <i class="mdi mdi-comment-multiple-outline menu-icon"></i>
+                    <span class="username">Feedback</span> 
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main content -->
+    <main role="main" class="container-fluid">
+        <div class="container">
+            <!-- Search Input -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Search events...">
+                </div>
+            </div>
+            <div class="row" id="eventCards">
+                <div class="col-md-12">
+                    <div class="row">
+                        {% for Event in events %}
+                        <div class="col-md-4 event-card-item">
+                            <div class="card mb-4 shadow-sm">
+                                {% if Event.event_image %}
+                                <img src="{{ Event.event_image.url }}" alt="Thumbnail">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ Event.event_name }}</h5>
+                                    <p class="card-text">Date: {{ Event.event_date }}</p>
+                                    <p class="card-text">Details: {{ Event.event_details }}</p>
+                                    <a class="btn btn-secondary" href="/members_event_feedback/?event_id={{ Event.id }}">Feedback</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#searchInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#eventCards .event-card-item").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+    </script>
+    
+</body>
+</html>

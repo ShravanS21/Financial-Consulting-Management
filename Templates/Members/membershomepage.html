@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Members Homepage</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        #sidebar {
+            min-height: 100vh;
+            background: #3960AD;
+            color: #ddd;
+            border-right: 1px solid #5fa6ed;
+            padding-top: 20px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+        }
+
+        #sidebar .nav-link {
+            color: #fff;
+            padding: 15px;
+            margin-left: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        #sidebar .nav-link.active, #sidebar .nav-link:hover {
+            background-color: #578efb;
+            color: #fff;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo img {
+            height: 80px;
+            margin-left: 80px;
+        }
+
+        
+        
+        .navbar-custom {
+            background-color: #778da9;
+            border-bottom: 1px solid #ffffff;
+        }
+        
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link {
+            color: #fff;
+        }
+        
+        #logout {
+            background-color: #1b263b;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        
+        #logout:hover {
+            background-color: #162035;
+            transform: scale(1.05);
+        }
+        
+        .content-section {
+            display: none;
+        }
+      
+        .content-section.active {
+            display: block;
+        }
+        
+        .video-card {
+            background-color: #e4e4e7;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .video-card img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .video-card-body {
+            padding: 15px;
+            opacity: 0.2;
+        }
+        
+        .video-card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .video-card-description {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .video-card-button {
+            background-color: #176B87;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .video-card-button:hover {
+            background-color: #0f4c61;
+            text-decoration: none;
+            color: #fff;
+        }
+        
+        .container {
+            margin-left: 130px; /* Adjust based on your sidebar width */
+            padding-top: -4px;
+            max-width: calc(100% - 130px);
+            min-height: 60vh; /* Ensure the container does not overflow */
+        }
+        
+        
+        .watch-now {        
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+        }
+        
+        .card-custom {
+            margin: 15px 0;
+        }
+
+        .card-body {
+            background-color: #ffffff;
+        }
+
+        .card {
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3, .card p {
+            margin: 0;
+        }
+
+        .card i {
+            font-size: 2em;
+        }
+
+        .card-footer {
+            padding: 0.25rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .bg-blue {
+            background-color: #17a2b8 !important;
+        }
+
+        .bg-green {
+            background-color: #28a745 !important;
+        }
+
+        .bg-yellow {
+            background-color: #ffc107 !important;
+        }
+
+        .bg-red {
+            background-color: #dc3545 !important;
+        }
+
+        .bg-light-blue {
+            background-color: #26a7ba !important;
+        }
+
+        .bg-light-green {
+            background-color: #3eb85a !important;
+        }
+
+        .bg-light-yellow {
+            background-color: #f6c226 !important;
+        }
+
+        .bg-light-red {
+            background-color: #de3e4e !important;
+        }
+        
+        .card-body i {
+            font-size: 2em;
+            color: #fff;
+        }
+
+        .card-body h3, .card-body p {
+            color: #fff;
+        }
+
+        .card-footer {
+            padding: 0.25rem 1rem;
+            font-size: 0.875rem;
+        }
+
+       
+
+        .card {
+            border-radius: 10px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .card-header {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        .table {
+            margin: 0;
+            border-collapse: collapse;
+        }
+
+        .table thead {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        .table th, .table td {
+            text-align: left;
+            padding: 12px;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #f2f2f2;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #e9ecef;
+        }
+
+        .table-bordered {
+            border: 1px solid #dee2e6;
+        }
+
+        .table-bordered th, .table-bordered td {
+            border: 1px solid #dee2e6;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .header-custom {
+            background-color: #f8f9fa; /* Light background for a modern look */
+            border-bottom: 1px solid #dee2e6; /* Subtle border for separation */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-title h1 {
+            font-size: 26px;
+            color: #212529;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .header-title p {
+            font-size: 18px;
+            color: #6c757d;
+            margin: 5px 0 0;
+        }
+        
+        .header-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .img-link {
+            display: inline-block;
+            margin-right: 20px;
+        }
+        
+        .action-image {
+            width: 110px;
+            border-radius: 8px;
+
+            transition: transform 0.3s ease, opacity 0.3s ease; /* Apply transition to both transform and opacity */
+        }
+        
+        .action-image:hover {
+            transform: scale(1.1); /* Slightly enlarge the image on hover */
+        }
+        
+        .profile-info {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: #212529;
+        }
+        
+        .profile-info .profile-picture {
+            width: 50px; /* Consistent size */
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #007bff;
+            transition: border-color 0.3s ease;
+        }
+        
+        .profile-info:hover .profile-picture {
+            border-color: #0056b3;
+        }
+        
+        .profile-info .profile-name {
+            font-size: 18px;
+            margin-left: 12px;
+            font-weight: 500;
+        }
+        
+
+        .dropdown-item:hover {
+            padding: 10px;
+            background-color: #5fa6ed;
+            color: #fff;
+    
+        }
+
+        .btn-custom {
+            background-color: #ff6f61;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 30px;
+            transition: background-color 0.3s, transform 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-custom i {
+            margin-right: 8px;
+        }
+
+        .btn-custom:hover {
+            background-color: #e55e50;
+            transform: scale(1.05);
+        }
+
+        .btn-custom:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(255, 111, 97, 0.5);
+        }
+        .footer {
+            background-color: #343738;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: -100px; /* Hide it initially */
+            width: 100%;
+            transition: bottom 0.3s ease-in-out; /* Smooth slide-in effect */
+            z-index: 1000;
+        }
+        
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer a:hover {
+            color: #DAFFFB; /* Hover color change */
+        }
+    </style>
+</head>
+<body style="background-color: #e3f7ff;">
+    
+
+        {% if popup_message %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                alert("{{ popup_message }}");
+            });
+        </script>
+    {% endif %}
+            <!-- Sidebar -->
+            <nav id="sidebar" class="sidebar">
+                <div class="sidebar-logo">
+                    <img src="{% static 'images/FCP_logo.png' %}" alt="Logo">
+                    <p>____________________________</p>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/memberhome/">
+                            <i class="fa fa-home" aria-hidden="true"></i>
+                            <span class="username">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#eventsDropdown" aria-expanded="false" aria-controls="eventsDropdown">
+                            <i class="fa fa-folder" aria-hidden="true"></i>
+                            <span class="username">Events</span>
+                        </a>
+                        <div class="collapse" id="eventsDropdown">
+                            <ul class="list-unstyled pl-3">
+                                <li><a class="dropdown-item" href="/events/membersupcoming/" style="color: #fff;">Upcoming/Ongoing</a></li>
+                                <li><a class="dropdown-item" href="/events/memberscompleted/" style="color: #fff;">Completed</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/members_videogallery/">
+                            <i class="fa fa-file-video" aria-hidden="true"></i>
+                            <span class="username">Video Gallery</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/members_blogs/">
+                            <i class="fa fa-book"></i>
+                            <span class="username">Blogs</span> 
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/change_password/">
+                            <i class="fa fa-key" aria-hidden="true"></i>
+                            <span class="username">Change Password</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/members_trainings/">
+                            <i class="fa fa-laptop"></i>
+                            <span class="username">Training Sessions</span> 
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/members_generalfeedback/">
+                            <i class="mdi mdi-comment-multiple-outline menu-icon"></i>
+                            <span class="username">Feedback</span> 
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/userlogin/">
+                            <i class="fa fa-sign-out-alt"></i>
+                            <span class="username">Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- Main content -->
+            <div class="container" style="background-color: #e3f7ff;">
+                <div class="row">
+                    <div class="container mt-5">
+                        <header class="d-flex justify-content-between align-items-center mb-4 header-custom">
+                            <div class="header-title">
+                                <h1>Welcome, {{ username }}</h1>
+                                <p>Welcome to the Members Panel of Financial Consulting Portal</p>
+                            </div>
+                            <div class="header-actions d-flex align-items-center">
+                                <!-- Image instead of Pay button -->
+                                <a href="/payment_page/" class="img-link">
+                                    <img src="{% static 'images/pay_image.png' %}" alt="Payment" class="action-image">
+                                </a>
+                                {% if profile_picture %}
+                                <a href="/members_editprofile/" class="profile-info d-flex align-items-center">
+                                    <img src="{{ profile_picture }}" alt="Profile Picture" class="profile-picture rounded-circle">
+                                    <span class="ml-2 profile-name">{{ username }}</span>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </header>
+                        
+                        
+            
+                        <div class="row">
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="card">
+                                    <div class="card-body bg-light-green">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h3 style="font-weight: bold;">{{ total_events }}</h3>
+                                                <p style="font-weight: bold;">Total Events</p>
+                                            </div>
+                                            <i class="fa fa-chart-bar" style="color: #50d56f;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-green d-flex justify-content-between align-items-center">
+                                        <a href="/memberscompleted/" class="text-light" style="font-weight: bold;">More info</a>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="card">
+                                    <div class="card-body bg-light-yellow">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h3 style="font-weight: bold;">{{ event_registrations_count }}</h3>
+                                                <p style="font-weight: bold;">Event Registrations</p>
+                                            </div>
+                                            <i class="fa fa-user-plus" style="color: #f9da7c;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-yellow d-flex justify-content-between align-items-center">
+                                        <a href="#reg" class="text-light" style="font-weight: bold;">More info</a>
+                                    </div>
+                                </div>
+                            </div>
+            
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="card">
+                                    <div class="card-body bg-light-red">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h3 style="font-weight: bold;">{{ total_blogs }}</h3>
+                                                <p style="font-weight: bold;">Total Blogs</p>
+                                            </div>
+                                            <i class="fa fa-chart-pie" style="color: #ee6070;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-red d-flex justify-content-between align-items-center">
+                                        <a href="/members_blogs/" class="text-light" style="font-weight: bold;">More info</a>
+                                    </div>
+                                </div>
+                            </div>
+                        
+
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="card">
+                                    <div class="card-body bg-light-blue">
+                                        <div class="d-flex justify-content-between align-items-center"> 
+                                            <div>
+                                                <h3 style="font-weight: bold;">{{ total_trainings }}</h3>
+                                                <p style="font-weight: bold;">Total Trainings</p>
+                                            </div>
+                                            <i class="fa fa-laptop" style="color: #2abed4;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer bg-blue d-flex justify-content-between align-items-center">
+                                        <a href="/members_trainings/" class="text-light" style="font-weight: bold;">More info</a>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+            
+                        <!-- Registered Events Table Section -->
+                        <div id="reg">
+                        <div class="row mt-5">
+                            <div class="col-lg-6 col-md-12">
+                                <div class="card shadow-lg">
+                                    <div class="card-header bg-primary text-white">
+                                        <h3 class="card-title">Registered Events</h3>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-hover table-bordered mb-0">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th>Event Name</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for event in registered_events %}
+                                                    <tr>
+                                                        <td>{{ event.event_name }}</td>
+                                                        <td>{{ event.event_date }}</td>
+                                                        <td>{{ event.event_time }}</td>
+                                                    </tr>
+                                                    {% empty %}
+                                                    <tr>
+                                                        <td colspan="3">No events registered.</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            </main>
+        </div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const navLinks = document.querySelectorAll('#sidebar .nav-link');
+        
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    // Remove active class from all links
+                    navLinks.forEach(link => link.classList.remove('active'));
+                    // Add active class to the clicked link
+                    this.classList.add('active');
+                    
+                    // Show the corresponding content section
+                    const contentSections = document.querySelectorAll('.content-section');
+                    contentSections.forEach(section => section.classList.remove('active'));
+                    const targetSection = document.querySelector(this.getAttribute('href'));
+                    targetSection.classList.add('active');
+                });
+            });
+        });
+
+        document.addEventListener("scroll", function() {
+            var footer = document.querySelector("footer");
+            if (window.scrollY > 200) {  // Change the value as per when you want the footer to appear
+                footer.style.bottom = "0";  // Make the footer visible when scrolling down
+            } else {
+                footer.style.bottom = "-100px";  // Hide the footer again when scrolling up
+            }
+        });
+    </script>
+</body>
+</html>

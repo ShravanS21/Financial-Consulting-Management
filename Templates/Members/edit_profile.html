@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Navbar Styles */
+        .navbar-custom {
+            background: #3960AD;
+            padding: 10px 20px;
+        }
+
+        .navbar-custom .navbar-brand {
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            margin-left: 280px;
+            font-family: 'Playfair Display', italic;
+        }
+
+        .navbar-custom .navbar-brand h2 {
+            height: 40px;
+            color: #fff;
+            margin: 0;
+            display: inline-block;
+        }
+
+        .navbar-custom .nav-link {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .navbar-custom .nav-link:hover {
+            color: #adb5bd;
+        }
+
+        #logout {
+            background-color: #dc3545;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        #logout:hover {
+            background-color: #c82333;
+            transform: scale(1.05);
+        }
+
+        /* Sidebar Styles */
+        #sidebar {
+            min-height: 100vh;
+            background: #3960AD;
+            color: #ddd;
+            border-right: 1px solid #5fa6ed;
+            padding-top: 20px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            width: 250px;
+        }
+
+        #sidebar .nav-link {
+            color: #fff;
+            padding: 15px;
+            margin-left: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        #sidebar .nav-link.active, #sidebar .nav-link:hover {
+            background-color: #578efb;
+            color: #fff;
+        }
+
+        .sidebar-logo {
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo img {
+            height: 80px;
+            margin-left: 80px;
+        }
+
+        /* Main Content Styles */
+        .container {
+            margin-left: 270px;
+            padding-top: 20px;
+        }
+
+        .card {
+            border: none;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .card-header {
+            background-color: #fff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-size: 28px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            width: 100%;
+        }
+
+        button[type="submit"] {
+            background-color: #3960AD;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #305a8a;
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 10px;
+            left: 30px;
+            font-size: 24px;
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .back-arrow:hover {
+            color: #0056b3;
+        }
+
+        /* Profile Picture Preview */
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+            border: 2px solid #ddd;
+        }
+        
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-buttons button {
+            width: 48%;
+        }
+        /* Styling for footer */
+        footer {
+            background-color: #343738;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #DAFFFB; /* Hover color change */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <a class="navbar-brand" href="#">
+            <h2>Edit Profile</h2>
+        </a>
+        <div class="ml-auto">
+            <a class="btn btn-custom" id="logout" href="/userlogin/">
+                <i class="fa fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Sidebar -->
+    <nav id="sidebar">
+        <div class="sidebar-logo">
+            <img src="{% static 'images/FCP_logo.png' %}" alt="Logo">
+            <p>____________________________</p>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="/memberhome/">
+                    <i class="fa fa-home" aria-hidden="true"></i>
+                    <span class="username">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#eventsDropdown" aria-expanded="false" aria-controls="eventsDropdown">
+                    <i class="fa fa-folder" aria-hidden="true"></i>
+                    <span class="username">Events</span>
+                </a>
+                <div class="collapse" id="eventsDropdown">
+                    <ul class="list-unstyled pl-3">
+                        <li><a class="dropdown-item" href="/events/membersupcoming/" style="color: #fff;">Upcoming/Ongoing</a></li>
+                        <li><a class="dropdown-item" href="/events/memberscompleted/" style="color: #fff;">Completed</a></li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="/members_editprofile/">
+                    <i class="fa fa-pencil" aria-hidden="true"></i>
+                    <span class="username">Edit Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/members_videogallery/">
+                    <i class="fa fa-file-video" aria-hidden="true"></i>
+                    <span class="username">Video Gallery</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/members_blogs/">
+                    <i class="fa fa-book"></i>
+                    <span class="username">Blogs</span> 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/change_password/">
+                    <i class="fa fa-key" aria-hidden="true"></i>
+                    <span class="username">Change Password</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/members_trainings/">
+                    <i class="fa fa-laptop"></i>
+                    <span class="username">Training Sessions</span> 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/members_generalfeedback/">
+                    <i class="mdi mdi-comment-multiple-outline menu-icon"></i>
+                    <span class="username">Feedback</span> 
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                Edit Your Profile
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/members_editprofile/" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="username">Username:</label>
+                            <input type="text" id="username" name="username" class="form-control" value="{{ user.username }}" pattern="[A-Za-z ]+" title="Only letters are allowed" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid username.
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="age">Age:</label>
+                            <input type="text" id="age" name="age" class="form-control" value="{{ user.age }}" pattern="[0-9]{1,2}" title="Please enter a valid age" min="18" max="80" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid age.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="gender">Gender:</label>
+                            <div>
+                                <input type="radio" id="gender_male" name="member_gender" value="male" 
+                                    {% if user.gender == 'male' %}checked{% endif %} required>
+                                <label for="gender_male">Male</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="gender_female" name="member_gender" value="female" 
+                                    {% if user.gender == 'female' %}checked{% endif %} required>
+                                <label for="gender_female">Female</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="gender_other" name="member_gender" value="other" 
+                                    {% if user.gender == 'other' %}checked{% endif %} required>
+                                <label for="gender_other">Other</label>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please select your gender.
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="contactno">Contact Number:</label>
+                            <input type="text" id="contactno" name="contactno" class="form-control" value="{{ user.contactno }}" pattern="[0-9]{10}" title="Please enter a valid 10-digit contact number" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid 10-digit contact number.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="email">Email:</label>
+                            <input type="email" id="email" name="email" class="form-control" value="{{ user.email }}" required>
+                            <div class="invalid-feedback">
+                                Please enter a valid email address.
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="profile_picture">Profile Picture:</label>
+                            <input type="file" id="profile_picture" name="profile_picture" class="form-control">
+                            {% if user.profile_picture %}
+                                <img src="{{ user.profile_picture.url }}" class="profile-pic" alt="Profile Picture Preview">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+                
+                
+                
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+</body>
+</html>

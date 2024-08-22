@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Trainings</title>
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    body {
+        background-color: #f8f9fa;
+        color: #212529;
+    }
+
+    .form-container h1 {
+        margin-bottom: 30px;
+        margin-top: 0%;
+    }
+    .form-container label {
+        font-weight: bold;
+    }
+    .form-container .form-group {
+        margin-bottom: 20px;
+    }
+    .form-container input[type="text"]{
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 10px;
+        width: 100%;
+    }
+    .form-container input[type="email"] {
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .form-container input[type="password"] {
+        background-color: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 10px;
+        width: 100%;
+    }
+    .form-container button[type="submit"] {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        color: #ffffff;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .form-container button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    #sidebar {
+        width: 250px; /* Adjust the width as needed */
+        background-color: #343a40;
+        color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        position: fixed; /* Fixed positioning to make it hover over other elements */
+        top: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 1000;
+        padding: 20px;
+        overflow-y: auto; /* Allows scrolling if content overflows */
+    }
+    
+    #sidebar .logo {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    #sidebar .logo img {
+        width: 80px; /* Adjust the width as needed */
+        height: auto;
+    }
+    
+    #sidebar .user-info {
+        padding: 10px;
+        border-bottom: 1px solid #444;
+        text-align: center;
+    }
+    
+    #sidebar .user-info img {
+        border: 4px solid #007bff;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+    }
+    
+    #sidebar .user-info h5 {
+        margin: 10px 0 5px;
+        font-size: 1.2rem;
+    }
+    
+    #sidebar .user-info p {
+        font-size: 0.9rem;
+    }
+    
+    #sidebar .nav-link {
+        color: #fff;
+        padding: 15px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+        display: block;
+        text-align: left
+    }
+    
+    #sidebar .nav-link.active {
+        background-color: #484f56;
+        color: #ffffff;
+    }
+    
+    #sidebar .nav-link:hover {
+        background-color: #495057;
+        color: #ffffff;
+    }       
+    
+    /* Navbar styles */
+    .navbar {
+        background-color: #e1f0ff;
+        color: #fff;
+        padding: 15px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-left: 250px; /* Adjust to match the sidebar width */
+        z-index: 500; /* Ensures navbar is below the sidebar */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #fff;
+        text-transform: uppercase;
+    }
+    
+    .navbar-nav {
+        display: flex;
+        align-items: center;
+    }
+    
+    .navbar-nav .nav-item {
+        margin: 0 10px;
+    }
+    
+    .navbar-nav .nav-link {
+        color: #fff;
+        font-size: 1rem;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s, color 0.3s;
+        text-decoration: none;
+    }
+    
+    .navbar-nav .nav-link:hover {
+        background-color: #0056b3;
+        color: #fff;
+    }
+    
+    .navbar-nav .nav-link.active {
+        background-color: #003f7f;
+        color: #fff;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        #sidebar {
+            width: 200px;
+        }
+    
+        #sidebar .logo img {
+            width: 100px;
+        }
+    
+        .navbar {
+            margin-left: 0; /* Reset margin for mobile view */
+        }
+    
+        #sidebar .nav-links {
+            flex-direction: row; /* Horizontal layout for mobile view */
+        }
+    
+        #sidebar .nav-links a {
+            margin-bottom: 0;
+            margin-right: 15px; /* Space between items */
+        }
+    }
+    
+    
+                
+    #logout {
+        background-color: #3960AD; /* Dark blue background */
+        color: #fff; /* White text */
+        border: none; /* Remove default border */
+        border-radius: 5px; /* Rounded corners */
+        padding: 6px 4px; /* Padding for better size */
+        font-size: 16px; /* Increase font size for readability */
+        display: flex; /* Flexbox for alignment */
+        align-items: center; /* Center items vertically */
+        justify-content: center; /* Center items horizontally */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s, transform 0.3s; /* Smooth transition effects */
+    }
+    
+    #logout:hover {
+        background-color: #294a80; /* Darker blue on hover */
+        transform: translateY(-2px); /* Slight lift effect */
+    }
+    
+    #logout:active {
+        background-color: #1e3c6c; /* Even darker blue on click */
+        transform: translateY(0); /* Reset lift effect */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow on click */
+    }
+    
+    #logout .fa-sign-out {
+        margin-right: 1px; /* Space between icon and text */
+    }
+    
+    #logout a.nav-link {
+        color: #fff; /* Ensure text color is white */
+        text-decoration: none; /* Remove underline from link */
+    }
+    .container {
+        margin-bottom: 370px;
+    }
+    .card-custom {
+        margin: 15px 0;
+    }
+
+    .card-body {
+        background-color: #ffffff;
+    }
+
+    .btn {
+        background-color: #DAFFFB
+    }
+
+    .content-section {
+        display: none;
+    }
+    
+    .content-section.active {
+        display: block;
+    }
+    
+    #submit {
+        background-color: #04364A; /* Primary color */
+        color: #fff; /* White text */
+        border: none; /* Remove border */
+        padding: 10px 20px; /* Padding for size */
+        font-size: 16px; /* Font size */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    }
+    
+    #submit:hover {
+        background-color: #0056b3; /* Darker shade on hover */
+        transform: translateY(-2px); /* Slight upward movement on hover */
+    }
+    
+    #submit:active {
+        background-color: #003f7f; /* Even darker shade on click */
+        transform: translateY(0); /* Reset movement on click */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow on click */
+    }
+    
+    #submit:focus {
+        outline: none; /* Remove default focus outline */
+        box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom focus outline */
+    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #dddddd;
+            margin-top: 20px;
+        }
+    
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+    
+        th {
+            background-color: #f2f2f2;
+        }
+    
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+    
+        .action-buttons button {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+    
+        .approve {
+            background-color: #5cb85c;
+            color: white;
+        }
+    
+        .decline {
+            background-color: #d9534f;
+            color: white;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #dddddd;
+            margin-top: 20px;
+        }
+    
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+    
+        th {
+            background-color: #f2f2f2;
+        }
+    
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+    
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+    
+        .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+    
+        .action-buttons button {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+    
+        .approve {
+            background-color: #5cb85c;
+            color: white;
+        }
+    
+        .decline {
+            background-color: #d9534f;
+            color: white;
+        }
+        #endevent {
+            background-color: #b30000; /* Primary color */
+            color: #fff; /* White text */
+            border: none; /* Remove border */
+            padding: 10px 20px; /* Padding for size */
+            font-size: 16px; /* Font size */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+        }
+        
+        #endevent:hover {
+            background-color: #b30000; /* Darker shade on hover */
+            transform: translateY(-2px); /* Slight upward movement on hover */
+        }
+        
+        #endevent:active {
+            background-color: #003f7f; /* Even darker shade on click */
+            transform: translateY(0); /* Reset movement on click */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow on click */
+        }
+        
+        #endevent:focus {
+            outline: none; /* Remove default focus outline */
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom focus outline */
+        }
+        .nav-link {
+            color: #ffffff;
+            cursor: pointer;
+        }
+        .dropdown-menu {
+            background-color: #699fd4;
+            border: 1px solid #5c8fc3;
+        }
+        .dropdown-menu .dropdown-item {
+            color: #212529;
+        }
+        .dropdown-menu .dropdown-item:hover {
+            background-color: #6a86a3;
+            color: #007bff;
+        } 
+        .nav-link.active,
+        .dropdown-item.active {
+            background-color: #176B87; /* Change to your desired active background color */
+            color: #bb8080; /* Change to your desired active text color */
+        }
+        .nav-link.active i,
+        .dropdown-item.active i {
+            color: #b18787; /* Ensure icons change color with active state */
+        }
+        .collapse.show {
+            display: block !important; /* Ensure the dropdown stays open */
+        }
+        .admin {
+            font-family: 'Playfair Display', italic;
+            font-size: 2.0rem;
+            color: #343a40;
+            
+            margin-top: 20px; /* Adjust this value as needed to move the h2 down */
+        }
+</style>
+</head>
+<body class="text-light">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <h2 style="color:#343a40" class="admin">Add Training</h2>
+    <div class="ml-auto">
+        <button type="button" id="logout" class="btn btn-sm d-flex align-items-center justify-content-center">
+            <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+            <a class="nav-link text-dark" href="/adminlogin/" style="margin-left: 8px;">Logout</a>
+        </button>
+    </div>
+</nav> 
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+            <div class="logo">
+                <img src="{% static 'images/FCP_logo_white.png' %}" alt="Logo">
+            </div>
+            <div class="sidebar-sticky">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/adminhome/">
+                            <i class="fa fa-user-circle" aria-hidden="true"></i>
+                            <span class="username">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/adminaddevents/">
+                            <i class="fa fa-newspaper" aria-hidden="true"></i>
+                            <span class="username">Add Events</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#eventsDropdown" aria-expanded="false" aria-controls="eventsDropdown">
+                            <i class="fa fa-list" aria-hidden="true"></i>
+                            <span class="username">View Events</span>
+                        </a>
+                        <div class="collapse" id="eventsDropdown">
+                            <ul class="list-unstyled pl-3">
+                                <li><a class="dropdown-item" href="/adminUpcomingevents/" style="color: #fff;">Upcoming/Ongoing</a></li>
+                                <li><a class="dropdown-item" href="/adminCompletedevents/" style="color: #fff;">Completed</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/adminflashnews/">
+                            <i class="fa fa-newspaper" aria-hidden="true"></i>
+                            <span class="username">Flash</span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#BlogsDropdown" aria-expanded="false" aria-controls="BlogsDropdown">
+                            <i class="fa fa-folder" aria-hidden="true"></i>
+                            <span class="username">Blogs</span>
+                        </a>
+                        <div class="collapse" id="BlogsDropdown">
+                            <ul class="list-unstyled pl-3">
+                                <li><a class="dropdown-item" href="/adminaddblogs/" style="color: #fff;">Add Blog</a></li>
+                                <li><a class="dropdown-item" href="/admin_view_blogs/" style="color: #fff;">View Blogs</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link active dropdown-toggle" data-toggle="collapse" href="#trainingsDropdown" aria-expanded="false" aria-controls="trainingsDropdown">
+                            <i class="fa fa-laptop" aria-hidden="true"></i>
+                            <span class="username">Trainings</span>
+                        </a>
+                        <div class="collapse" id="trainingsDropdown">
+                            <ul class="list-unstyled pl-3">
+                                <li><a class="dropdown-item" href="/adminaddtrainings/" style="color: #fff;">Add Training</a></li>
+                                <li><a class="dropdown-item" href="/admin_view_trainings/" style="color: #fff;">View Trainings</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#videosDropdown" aria-expanded="false" aria-controls="videosDropdown">
+                            <i class="fa fa-file-video" aria-hidden="true"></i>
+                            <span class="username">Video Gallery</span>
+                        </a>
+                        <div class="collapse" id="videosDropdown">
+                            <ul class="list-unstyled pl-3">
+                                <li><a class="dropdown-item" href="/uploadvideo/" style="color: #fff;">Add Video</a></li>
+                                <li><a class="dropdown-item" href="/view_videos/" style="color: #fff;">View Video</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/approveuser/">
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                            <span class="username">Members</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#EventDropdown" aria-expanded="false" aria-controls="EventDropdown">
+                            <i class="fa fa-folder" aria-hidden="true"></i>
+                            <span class="username">Event Registration</span>
+                        </a>
+                        <div class="collapse" id="EventDropdown">
+                            <ul class="list-unstyled pl-3">
+                                <li><a class="dropdown-item" href="/adminview_public_eventregister/" style="color: #fff;">Public</a></li>
+                                <li><a class="dropdown-item" href="/adminview_members_eventregister/" style="color: #fff;">Members</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin_viewpayment/">
+                            <i class="fa fa-credit-card"></i>
+                            <span class="username">Payment</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/viewfeedback/">
+                            <i class="fa fa-commenting"></i>
+                            <span class="username">Feedback</span>
+                        </a>
+                    </li>
+                </ul> 
+            </div>
+        </nav>
+        <!-- Main content -->
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="background-color: white; color: black;">
+            <div class="table-responsive">
+                <table class="table table-dark table-striped table-hover"></table>
+            </div>
+            <div class="container">
+                <div class="form-container">
+                    <form action="/adminaddtrainings/" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <br>
+                        <div class="form-group">
+                            <label for="title">Training Title <span class="text-danger">*</span></label></label>
+                            <input type="text" class="form-control" id="training_title" name="training_title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Training Description<span class="text-danger">*</span></label></label>
+                            <textarea class="form-control" id="training_description" name="training_description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="video">Video File<span class="text-danger">*</span></label></label>
+                            <input type="file" class="form-control-file" id="video_file" name="video_file" accept="video/*" >
+                        </div>
+                        <!-- New form group for video link -->
+                        <div class="form-group">
+                            <label for="videoLink">Video Link<span class="text-danger">*</span></label></label>
+                            <input type="url" class="form-control" id="video_link" name="video_link" placeholder="https://example.com/video" >
+                        </div>
+                        <div class="form-group">
+                            <label for="thumbnail">Thumbnail Image <span class="text-danger">*</span></label></label>
+                            <input type="file" class="form-control-file" id="training_image" name="training_image" accept="image/*" >
+                        </div>
+                        <button type="submit" id="submit">Upload</button>
+                    </form>
+                    {% if popup_message %}
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                alert("{{ popup_message }}");
+                            });
+                        </script>
+                    {% endif %}
+                </div>
+            </div> 
+        </main>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const navLinks = document.querySelectorAll('#sidebar .nav-link');
+        const eventsLink = document.getElementById('events-link');
+        const eventsCards = document.getElementById('events-cards');
+    
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                // Remove active class from all links
+                navLinks.forEach(link => link.classList.remove('active'));
+                // Add active class to the clicked link
+                this.classList.add('active');
+
+                // Show the events cards if Events Master is clicked
+                if (this === eventsLink) {
+                    eventsCards.style.display = 'flex';
+                } else {
+                    eventsCards.style.display = 'none';
+                }
+            });
+        });
+    });
+
+    
+        function removeActiveClasses() {
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            dropdownItems.forEach(item => item.classList.remove('active'));
+        }
+    
+        dropdownToggle.addEventListener('click', (event) => {
+            event.preventDefault();
+            const isExpanded = dropdownToggle.getAttribute('aria-expanded') === 'true';
+            
+            if (isExpanded) {
+                dropdownToggle.setAttribute('aria-expanded', 'false');
+                document.getElementById('documentsDropdown').classList.remove('show');
+                localStorage.removeItem('activeItem');
+            } else {
+                dropdownToggle.setAttribute('aria-expanded', 'true');
+                document.getElementById('documentsDropdown').classList.add('show');
+                localStorage.setItem('activeItem', `a[href="#documentsDropdown"]`);
+            }
+            
+            removeActiveClasses();
+            dropdownToggle.classList.add('active');
+        });
+
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', () => {
+                removeActiveClasses();
+                item.classList.add('active');
+                dropdownToggle.classList.add('active');
+                document.getElementById('documentsDropdown').classList.add('show');
+                localStorage.setItem('activeItem', `a[href="${item.getAttribute('href')}"]`);
+            });
+        });
+
+        function validateForm() {
+            const requiredFields = [
+                { id: 'blog_date', message: 'Please enter the date.' },
+                { id: 'blog_title', message: 'Please enter the article title.' },
+                { id: 'blog_authorName', message: 'Please enter the author name.' },
+                { id: 'blog_authorRole', message: 'Please enter the author role.' },
+                { id: 'blog_information', message: 'Please enter the blog information.' },
+                { id: 'blog_sub_heading', message: 'Please enter the blog sub heading.' },
+                { id: 'blog_sub_information', message: 'Please enter the blog sub information.' }
+            ];
+    
+            for (let field of requiredFields) {
+                const inputField = document.getElementById(field.id);
+                if (!inputField.value.trim()) {
+                    alert(field.message);
+                    inputField.focus();
+                    return false;
+                }
+            }
+            return true;
+        }
+</script>
+</body>
+</html>

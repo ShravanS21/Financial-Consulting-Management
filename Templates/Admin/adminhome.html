@@ -1,0 +1,1124 @@
+    <!DOCTYPE html>
+    <html lang="en">
+        {% load static %}
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Homepage</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.4.55/css/materialdesignicons.min.css">
+        <link rel="stylesheet" href="styles.css">
+        <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.2/main.min.css' rel='stylesheet' />
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.2/main.min.js'></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <style>
+            body {
+                background-color: #aab9cc;
+                color: #212529;
+            }
+
+            .form-container h1 {
+                margin-bottom: 30px;
+                margin-top: 0%;
+            }
+            .form-container label {
+                font-weight: bold;
+            }
+            .form-container .form-group {
+                margin-bottom: 20px;
+            }
+            .form-container input[type="text"]{
+                background-color: #e9ecef;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+                padding: 10px;
+                width: 100%;
+            }
+            .form-container input[type="email"] {
+                background-color: #e9ecef;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+                padding: 10px;
+                width: 100%;
+            }
+
+            .form-container input[type="password"] {
+                background-color: #e9ecef;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+                padding: 10px;
+                width: 100%;
+            }
+            .form-container button[type="submit"] {
+                background-color: #007bff;
+                border: none;
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                color: #ffffff;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+            .form-container button[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+
+            /* Sidebar styles */
+/* Sidebar styles */
+#sidebar {
+    width: 250px; /* Adjust the width as needed */
+    background-color: #343a40;
+    color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: fixed; /* Fixed positioning to make it hover over other elements */
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto; /* Allows scrolling if content overflows */
+}
+
+#sidebar .logo {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+#sidebar .logo img {
+    width: 80px; /* Adjust the width as needed */
+    height: auto;
+}
+
+#sidebar .user-info {
+    padding: 10px;
+    border-bottom: 1px solid #444;
+    text-align: center;
+}
+
+#sidebar .user-info img {
+    border: 4px solid #007bff;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+#sidebar .user-info h5 {
+    margin: 10px 0 5px;
+    font-size: 1.2rem;
+}
+
+#sidebar .user-info p {
+    font-size: 0.9rem;
+}
+
+#sidebar .nav-link {
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    display: block;
+    text-align: left
+}
+
+#sidebar .nav-link.active {
+    background-color: #484f56;
+    color: #ffffff;
+}
+
+#sidebar .nav-link:hover {
+    background-color: #495057;
+    color: #ffffff;
+}       
+
+/* Navbar styles */
+.navbar {
+    background-color: #e1f0ff;
+    color: #fff;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-left: 250px; /* Adjust to match the sidebar width */
+    z-index: 500; /* Ensures navbar is below the sidebar */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+.navbar-nav {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-nav .nav-item {
+    margin: 0 10px;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-size: 1rem;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: #ffffff;
+    color: #fff;
+}
+
+.navbar-nav .nav-link.active {
+    background-color: #ffffff;
+    color: #fff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #sidebar {
+        width: 200px;
+    }
+
+    #sidebar .logo img {
+        width: 100px;
+    }
+
+    .navbar {
+        margin-left: 0; /* Reset margin for mobile view */
+    }
+
+    #sidebar .nav-links {
+        flex-direction: row; /* Horizontal layout for mobile view */
+    }
+
+    #sidebar .nav-links a {
+        margin-bottom: 0;
+        margin-right: 15px; /* Space between items */
+    }
+}
+
+
+            
+#logout {
+    background-color: #3960AD; /* Dark blue background */
+    color: #fff; /* White text */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 6px 4px; /* Padding for better size */
+    font-size: 16px; /* Increase font size for readability */
+    display: flex; /* Flexbox for alignment */
+    align-items: center; /* Center items vertically */
+    justify-content: center; /* Center items horizontally */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transition effects */
+}
+
+#logout:hover {
+    background-color: #294a80; /* Darker blue on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+#logout:active {
+    background-color: #1e3c6c; /* Even darker blue on click */
+    transform: translateY(0); /* Reset lift effect */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow on click */
+}
+
+#logout .fa-sign-out {
+    margin-right: 1px; /* Space between icon and text */
+}
+
+#logout a.nav-link {
+    color: #fff; /* Ensure text color is white */
+    text-decoration: none; /* Remove underline from link */
+}
+            .card-custom {
+                margin: 15px 0;
+            }
+
+            .card-body {
+                background-color: #ffffff;
+            }
+
+            .btn {
+                background-color: #DAFFFB
+            }
+
+            .content-section {
+                display: none;
+            }
+        
+            .content-section.active {
+                display: block;
+            }
+            
+            
+            
+            
+            
+            #submit {
+                background-color: #04364A; /* Primary color */
+                color: #fff; /* White text */
+                border: none; /* Remove border */
+                padding: 10px 20px; /* Padding for size */
+                font-size: 16px; /* Font size */
+                border-radius: 5px; /* Rounded corners */
+                cursor: pointer; /* Pointer cursor on hover */
+                transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+            }
+            
+            #submit:hover {
+                background-color: #0056b3; /* Darker shade on hover */
+                transform: translateY(-2px); /* Slight upward movement on hover */
+            }
+            
+            #submit:active {
+                background-color: #003f7f; /* Even darker shade on click */
+                transform: translateY(0); /* Reset movement on click */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow on click */
+            }
+            
+            #submit:focus {
+                outline: none; /* Remove default focus outline */
+                box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom focus outline */
+            }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 1px solid #dddddd;
+                    margin-top: 20px;
+                }
+            
+                th, td {
+                    border: 1px solid #dddddd;
+                    text-align: left;
+                    padding: 8px;
+                }
+            
+                th {
+                    background-color: #f2f2f2;
+                }
+            
+                tr:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+            
+                tr:hover {
+                    background-color: #f1f1f1;
+                }
+            
+                .action-buttons {
+                    display: flex;
+                    gap: 5px;
+                }
+            
+                .action-buttons button {
+                    padding: 5px 10px;
+                    border: none;
+                    cursor: pointer;
+                    border-radius: 3px;
+                }
+            
+                
+            
+                .decline {
+                    background-color: #d9534f;
+                    color: white;
+                }
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    border: 1px solid #dddddd;
+                    margin-top: 20px;
+                }
+            
+                th, td {
+                    border: 1px solid #dddddd;
+                    text-align: left;
+                    padding: 8px;
+                }
+            
+                th {
+                    background-color: #f2f2f2;
+                }
+            
+                tr:nth-child(even) {
+                    background-color: #f9f9f9;
+                }
+            
+                tr:hover {
+                    background-color: #f1f1f1;
+                }
+            
+                .action-buttons {
+                    display: flex;
+                    gap: 5px;
+                }
+            
+                .action-buttons button {
+                    padding: 5px 10px;
+                    border: none;
+                    cursor: pointer;
+                    border-radius: 3px;
+                }
+            
+                
+            
+                .decline {
+                    background-color: #d9534f;
+                    color: white;
+                }
+                #endevent {
+                    background-color: #b30000; /* Primary color */
+                    color: #fff; /* White text */
+                    border: none; /* Remove border */
+                    padding: 10px 20px; /* Padding for size */
+                    font-size: 16px; /* Font size */
+                    border-radius: 5px; /* Rounded corners */
+                    cursor: pointer; /* Pointer cursor on hover */
+                    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transition */
+                }
+                
+                #endevent:hover {
+                    background-color: #b30000; /* Darker shade on hover */
+                    transform: translateY(-2px); /* Slight upward movement on hover */
+                }
+                
+                #endevent:active {
+                    background-color: #003f7f; /* Even darker shade on click */
+                    transform: translateY(0); /* Reset movement on click */
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow on click */
+                }
+                
+                #endevent:focus {
+                    outline: none; /* Remove default focus outline */
+                    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.5); /* Custom focus outline */
+                }
+                .nav-link {
+                    color: #ffffff;
+                    cursor: pointer;
+                }
+                .dropdown-menu {
+                    background-color: #f8f9fa;
+                    border: 1px solid #ced4da;
+                }
+                .dropdown-menu .dropdown-item {
+                    color: #212529;
+                }
+                .dropdown-menu .dropdown-item:hover {
+                    background-color: #e9ecef;
+                    color: #007bff;
+                } 
+                .collapse {
+                    transition: height 0.3s ease;
+                }
+                .card-custom {
+                    margin: 15px 0;
+                }
+        
+                .card-body {
+                    background-color: #ffffff;
+                }
+        
+                .card {
+                    border-radius: 5px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                }
+        
+                .card h3, .card p {
+                    margin: 0;
+                }
+        
+                .card i {
+                    font-size: 2em;
+                }
+        
+                /* Original card footer colors */
+                .bg-blue {
+                    background-color: #17a2b8 !important; /* Blue color */
+                }
+
+                .bg-green {
+                    background-color: #28a745 !important; /* Green color */
+                }
+
+                .bg-yellow {
+                    background-color: #ffc107 !important; /* Yellow color */
+                }
+
+                .bg-red {
+                    background-color: #dc3545 !important; /* Red color */
+                }
+
+                /* Lighter shades for card bodies */
+                .bg-light-blue {
+                    background-color: #26a7ba !important; /* Light blue color */
+                }
+
+                .bg-light-green {
+                    background-color: #3eb85a !important; /* Light green color */
+                }
+
+                .bg-light-yellow {
+                    background-color: #f6c226 !important; /* Light yellow color */
+                }
+
+                .bg-light-red {
+                    background-color: #de3e4e !important; /* Light red color */
+                }
+
+                .card-body i {
+                    font-size: 2em;
+                    color: #fff;
+                }
+
+                .card-body h3, .card-body p {
+                    color: #fff; /* Ensure text color is readable */
+                }
+
+                .card-footer {
+                    padding: 0.25rem 1rem; /* Adjust as needed */
+                    font-size: 0.875rem; /* Optional: make the text smaller */
+                }
+            
+            .container {
+                margin-top: 2rem;
+            }
+            .cards {
+                background-color: #ffffff;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                padding: 2rem;
+                margin-bottom: 2rem;
+            }
+            .cardss {
+                background-color: #ffffff;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                padding: 0;
+                margin-bottom: 2rem;
+            }
+            h2 {
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+                color: #343a40;
+            }
+            .small-chart-container {
+                height: 400px;
+                overflow: hidden;
+            }
+            .row-equal-height {
+                display: flex;
+                flex-wrap: wrap;
+            }
+            .col-equal-height {
+                display: flex;
+                flex-direction: column;
+            }
+            canvas {
+                max-width: 100%;
+                height: auto !important;
+            }   
+            #myPieChart {
+                max-width: 350%; /* Set desired max width */
+                max-height: 350px; /* Set desired max height */
+            }    
+            .text-left {
+                text-align: left; /* Align text to the right */
+                margin-left: 10px;
+                margin-top: 5px; 
+            }
+            .cardss a:hover {
+                background-color: rgba(0, 0, 0, 0.05); /* Light background on hover */
+            }
+            .custom-table {
+                width: 100%;
+                background-color: #f9f9f9; /* Light background color */
+                border-collapse: collapse;
+            }
+        
+            .custom-table th {
+                background-color: #3b3d3f; /* Header background color */
+                color: white; /* Header text color */
+                padding: 10px;
+                text-align: left;
+            }
+        
+            .custom-table td {
+                border: 1px solid #dee2e6; /* Border color */
+                padding: 8px;
+                color: #333; /* Text color */
+            }
+        
+            .custom-table tr:hover {
+                background-color: #cadcef; /* Highlight color on hover */
+            }
+            
+            .blog-container {
+                overflow: hidden;
+                position: relative;
+            }
+            
+            .blog-scroll {
+                transition: transform 0.3s ease;
+            }
+            
+            .blog-item {
+                flex: 0 0 33.33%; /* Display 3 items at a time */
+                padding: 10px;
+            }
+            
+            .author-image {
+                width: 80px; /* Set a fixed width */
+                height: 80px; /* Set a fixed height equal to width */
+                border-radius: 50%; /* Makes the image circular */
+                object-fit: cover; /* Ensures the image covers the circle without distortion */
+            }
+                        
+            h6 {
+                margin: 0;
+                font-weight: bold;
+            }
+            .admin {
+                font-family: 'Playfair Display', italic;
+                font-size: 2.0rem;
+                color: #343a40;
+                
+                margin-top: 20px; /* Adjust this value as needed to move the h2 down */
+            }
+            .text-right {
+                position: relative;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-top: 20px;
+            }
+            
+            .scroll-btn {
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: #34393e; /* Modern blue color */
+                padding: 0;
+                transition: color 0.3s ease;
+            }
+            
+            .scroll-btn:hover {
+                color: #343637; /* Darker shade on hover */
+            }
+            
+            .scroll-btn:focus {
+                outline: none;
+            }
+            
+            .scroll-btn#scrollLeft {
+                position: absolute;
+                left: -8px; /* Adjust as needed */
+            }
+            
+            .scroll-btn#scrollRight {
+                position: absolute;
+                right: -8px; /* Adjust as needed */
+            }
+            
+            a {
+                text-decoration: none; /* Remove underline from all links */
+                color: inherit;
+            }
+            
+            a:hover {
+                text-decoration: none; /* Ensure no underline on hover */
+                color: inherit; /* Maintain text color on hover */
+            }
+        </style>
+    </head>
+    <body class="text-light">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <h2 style="color:#343a40" class="admin">Welcome, Admin</h2>
+            <div class="ml-auto">
+                <button type="button" id="logout" class="btn btn-sm d-flex align-items-center justify-content-center">
+                    <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+                    <a class="nav-link text-light" href="/adminlogin/" style="margin-left: 8px;">Logout</a>
+                </button>
+            </div>
+        </nav> 
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Sidebar -->
+                 
+                <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
+                    <div class="logo">
+                        <img src="{% static 'images/FCP_logo_white.png' %}" alt="Logo">
+                    </div>
+                    <div class="sidebar-sticky">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/adminhome/">
+                                    <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                    <span class="username">Dashboard</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/adminaddevents/">
+                                    <i class="fa fa-newspaper" aria-hidden="true"></i>
+                                    <span class="username">Add Events</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#eventsDropdown" aria-expanded="false" aria-controls="eventsDropdown">
+                                    <i class="fa fa-list" aria-hidden="true"></i>
+                                    <span class="username">View Events</span>
+                                </a>
+                                <div class="collapse" id="eventsDropdown">
+                                    <ul class="list-unstyled pl-3">
+                                        <li><a class="dropdown-item" href="/adminUpcomingevents/" style="color: #fff;">Upcoming/Ongoing</a></li>
+                                        <li><a class="dropdown-item" href="/adminCompletedevents/" style="color: #fff;">Completed</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link" href="/adminflashnews/">
+                                    <i class="fa fa-newspaper" aria-hidden="true"></i>
+                                    <span class="username">Flash</span>
+                                </a>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#BlogsDropdown" aria-expanded="false" aria-controls="BlogsDropdown">
+                                    <i class="fa fa-folder" aria-hidden="true"></i>
+                                    <span class="username">Blogs</span>
+                                </a>
+                                <div class="collapse" id="BlogsDropdown">
+                                    <ul class="list-unstyled pl-3">
+                                        <li><a class="dropdown-item" href="/adminaddblogs/" style="color: #fff;">Add Blog</a></li>
+                                        <li><a class="dropdown-item" href="/admin_view_blogs/" style="color: #fff;">View Blogs</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#trainingsDropdown" aria-expanded="false" aria-controls="trainingsDropdown">
+                                    <i class="fa fa-laptop" aria-hidden="true"></i>
+                                    <span class="username">Trainings</span>
+                                </a>
+                                <div class="collapse" id="trainingsDropdown">
+                                    <ul class="list-unstyled pl-3">
+                                        <li><a class="dropdown-item" href="/adminaddtrainings/" style="color: #fff;">Add Training</a></li>
+                                        <li><a class="dropdown-item" href="/admin_view_trainings/" style="color: #fff;">View Trainings</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#videosDropdown" aria-expanded="false" aria-controls="videosDropdown">
+                                    <i class="fa fa-file-video" aria-hidden="true"></i>
+                                    <span class="username">Video Gallery</span>
+                                </a>
+                                <div class="collapse" id="videosDropdown">
+                                    <ul class="list-unstyled pl-3">
+                                        <li><a class="dropdown-item" href="/uploadvideo/" style="color: #fff;">Add Video</a></li>
+                                        <li><a class="dropdown-item" href="/view_videos/" style="color: #fff;">View Video</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link" href="/approveuser/">
+                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                    <span class="username">Members</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" data-toggle="collapse" href="#EventDropdown" aria-expanded="false" aria-controls="EventDropdown">
+                                    <i class="fa fa-folder" aria-hidden="true"></i>
+                                    <span class="username">Event Registration</span>
+                                </a>
+                                <div class="collapse" id="EventDropdown">
+                                    <ul class="list-unstyled pl-3">
+                                        <li><a class="dropdown-item" href="/adminview_public_eventregister/" style="color: #fff;">Public</a></li>
+                                        <li><a class="dropdown-item" href="/adminview_members_eventregister/" style="color: #fff;">Members</a></li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/viewfeedback/">
+                                    <i class="fa fa-commenting"></i>
+                                    <span class="username">Feedback</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin_viewpayment/">
+                                    <i class="fa fa-credit-card"></i>
+                                    <span class="username">Payment</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/admin_chat/">
+                                    <i class="fa fa-commenting"></i>
+                                    <span class="username">Chat</span>
+                                </a>
+                            </li>
+                        </ul> 
+                    </div>
+                </nav>
+                
+                
+                <!-- Main content -->
+                <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4" style="background-color: rgb(239, 247, 249); color: black;">
+                
+               <br>
+                <!-- Cards Row -->
+                <div class="row">
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="card">
+                            <div class="card-body bg-light-blue">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 style="font-weight: bold;">{{ total_members }}</h3>
+                                        <p style="font-weight: bold;">Members</p>
+                                    </div>
+                                    <i class="fa fa-users" style="color: #2abed4;"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-blue d-flex justify-content-between align-items-center">
+                                <a href="/approveuser/" class="text-light" style="font-weight: bold;">More info</a>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="card">
+                            <div class="card-body bg-light-green">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 style="font-weight: bold;">{{ total_events }}</sup></h3>
+                                        <p style="font-weight: bold;">Total Events</p>
+                                    </div>
+                                    <i class="fa fa-chart-bar" style="color: #50d56f;"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-green d-flex justify-content-between align-items-center">
+                                <a href="/adminCompletedevents/" class="text-light" style="font-weight: bold;">More info</a>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="card">
+                            <div class="card-body bg-light-yellow">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 style="font-weight: bold;">{{ total_trainings }}</h3>
+                                        <p style="font-weight: bold;">Total Trainings</p>
+                                    </div>
+                                    <i class="fa fa-user-plus" style="color: #f9da7c;"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-yellow d-flex justify-content-between align-items-center">
+                                <a href="/admin_view_trainings/" class="text-light" style="font-weight: bold;">More info</a>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="col-lg-3 col-6">
+                        <!-- small box -->
+                        <div class="card">
+                            <div class="card-body bg-light-red">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h3 style="font-weight: bold;">{{ total_blogs }}</h3>
+                                        <p style="font-weight: bold;">Total Blogs</p>
+                                    </div>
+                                    <i class="fa fa-chart-pie"  style="color: #ee6070;"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-red d-flex justify-content-between align-items-center">
+                                <a href="/admin_view_blogs/" class="text-light" style="font-weight: bold;">More info</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                        <!-- Calendar -->
+                        
+                        <div class="container">
+                            <div class="row row-equal-height">
+                                <div class="col-md-6 col-equal-height">
+                                    <div class="cards small-chart-container">
+                                        <h2>Events Per Month</h2>
+                                        <canvas id="eventsChart"></canvas>
+                                    </div>
+                                    <div class="cardss mt-1">
+                                        <h5 class="text-left">Ongoing Events</h5>
+                                        <a href="/adminUpcomingevents/" style="text-decoration: none;">
+                                            <table class="table custom-table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Event Name</th>
+                                                        <th>Date</th>
+                                                        <th>Time</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for event in ongoing_events %}
+                                                    <tr>
+                                                        <td>{{ event.event_name }}</td>
+                                                        <td>{{ event.event_date }}</td>
+                                                        <td>{{ event.event_time }}</td>
+                                                    </tr>
+                                                    {% empty %}
+                                                    <tr>
+                                                        <td colspan="3">No ongoing events.</td>
+                                                    </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </a>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 col-equal-height">
+                                    <div class="cards">
+                                        <h2>Statistics Overview</h2>
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                
+                                    <a href="/admin_view_blogs/">
+                                    <div class="blogs mt-3">
+                                        <h5 class="text-left">Latest Blogs</h5>
+                                        <div class="blog-container">
+                                            <div class="blog-scroll d-flex" id="blogScroll">
+                                                {% for blog in blogs %}
+                                                <div class="blog-item text-center">
+                                                    <img src="{{ blog.blog_author_image.url }}" alt="Author Image" class="author-image img-fluid">
+                                                    <h6 class="mt-2">{{ blog.blog_authorName }}</h6>
+                                                    <p>{{ blog.blog_title }}</p>
+                                                </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="text-right mt-2 position-relative">
+                                            <button class="scroll-btn" id="scrollLeft">
+                                                <i class="fas fa-chevron-left"></i>
+                                            </button>
+                                            <button class="scroll-btn" id="scrollRight">
+                                                <i class="fas fa-chevron-right"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </a>
+                                </div>
+                            </div>
+                        </div>           
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', (event) => {
+                const navLinks = document.querySelectorAll('#sidebar .nav-link');
+            
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function(event) {
+                        const targetHref = this.getAttribute('href');
+                        
+                        if (targetHref.startsWith("#")) {
+                            // Internal link: Prevent default behavior and handle with JS
+                            event.preventDefault();
+            
+                            // Remove active class from all links
+                            navLinks.forEach(link => link.classList.remove('active'));
+                            // Add active class to the clicked link
+                            this.classList.add('active');
+            
+                            // Hide all content sections
+                            document.querySelectorAll('.content-section').forEach(section => {
+                                section.style.display = 'none';
+                            });
+            
+                            // Show the relevant content section
+                            const targetId = targetHref.substring(1); // Remove the '#' from the href
+                            const targetSection = document.getElementById(targetId);
+                            if (targetSection) {
+                                targetSection.style.display = 'block';
+                            }
+                        } else {
+                            // External link: Allow default behavior to load new page
+                            // Remove active class from all links
+                            navLinks.forEach(link => link.classList.remove('active'));
+                            // Add active class to the clicked link
+                            this.classList.add('active');
+                         }
+                    });
+                });
+            });
+            
+            
+        $(document).ready(function () {
+            $('.nav-link.dropdown-toggle').click(function (e) {
+                e.preventDefault(); // Prevent the default anchor behavior
+                
+                var $this = $(this);
+                var target = $this.attr('href'); // Get the target collapse div
+                
+                $(target).collapse('toggle'); // Toggle the collapse
+                
+                // Optional: close other dropdowns if multiple are present
+                $('.collapse').not(target).collapse('hide');
+            });
+        });    
+            
+        document.addEventListener("DOMContentLoaded", function () {
+            const section = "{{ section }}";
+            if (section) {
+                const sectionElement = document.getElementById(section);
+                if (sectionElement) {
+                    sectionElement.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+        <script type="application/json" id="event-data">
+            {{ events|safe|json_script:"event-data" }}
+        </script>
+        
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var calendarEl = document.getElementById('calendar');
+                var eventsData = JSON.parse(document.getElementById('event-data').textContent);
+            
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    events: eventsData.map(event => ({
+                        title: event.event_name,
+                        start: event.event_date + 'T' + event.event_time,
+                        allDay: true
+                    })),
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    }
+                });
+            
+                calendar.render();
+            });
+
+
+            const ctx = document.getElementById('eventsChart').getContext('2d');
+        const months = {{ months|safe }};
+        const counts = {{ counts|safe }};
+
+        const eventsChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: months,
+                datasets: [{
+                    label: 'Number of Events',
+                    data: counts,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('myPieChart').getContext('2d');
+            const myPieChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Registered Users', 'Events', 'Blogs'],
+                    datasets: [{
+                        label: 'Statistics',
+                        data: [
+                            {{ total_members }},
+                            {{ total_events }},
+                            {{ total_blogs }}
+                        ],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(220, 53, 69, 0.5)',
+                            'rgba(255, 206, 86, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(255, 206, 86, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Statistics Overview'
+                        }
+                    }
+                }
+            });
+        });
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const blogScroll = document.getElementById('blogScroll');
+            const scrollRight = document.getElementById('scrollRight');
+            const scrollLeft = document.getElementById('scrollLeft');
+        
+            let scrollPosition = 0;
+        
+            scrollRight.addEventListener('click', function() {
+                const maxScroll = blogScroll.scrollWidth - blogScroll.clientWidth;
+                if (scrollPosition < maxScroll) {
+                    scrollPosition += blogScroll.clientWidth;
+                    blogScroll.style.transform = `translateX(-${scrollPosition}px)`;
+                }
+            });
+        
+            scrollLeft.addEventListener('click', function() {
+                if (scrollPosition > 0) {
+                    scrollPosition -= blogScroll.clientWidth;
+                    blogScroll.style.transform = `translateX(-${scrollPosition}px)`;
+                }
+            });
+        });
+        
+
+        </script>
+
+</main>
+
+        </script>
+    </body>
+    </html>
