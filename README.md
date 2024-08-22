@@ -5,23 +5,19 @@ Available Commands
 In the project directory, you can run:
 
 python manage.py runserver
-
 Runs the Django development server.
 Open http://localhost:8000 to view the app in your browser.
 The page will reload if you make changes to the code.
 You may also see any runtime errors in the console.
 
 python manage.py test
-
 Launches the test runner to execute unit tests for the project.
 See the Django documentation on testing for more information.
 
 python manage.py migrate
-
 Applies the migrations to the database, keeping the database schema in sync with your models.
 
 python manage.py makemigrations
-
 Generates new migration files based on the changes in your models.
 
 Project Structure
